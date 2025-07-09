@@ -14,9 +14,26 @@ export function GameProvider({ children }) {
 
   const startGame = () => {
     setScore(0);
-    setTime(10);
+    setTime(15);
     setGame("playing");
     molePlacing();
+
+    intervalRef.current = setInterval(() => {
+      setTime((prev) => {
+        if (prev === 1) {
+          clearInterval(intervalRef.current);
+          if (score > 0) {
+            setHigh((prevHigh) =>
+              [...prevHigh, score].sort((a, b) => b - a).slice(0, 5)
+            );
+          }
+          setGame("over");
+          return 0;
+        }
+
+        return prev - 1;
+      });
+    }, 1000);
   };
 
   const molePlacing = () => {
@@ -30,9 +47,11 @@ export function GameProvider({ children }) {
   };
 
   const restartGame = () => {
-    setHigh((prev) => [...prev, score]);
-    setGame("welcome");
+    if (score > 0 && game == "over") {
+      setHigh((prev) => [...prev, score]);
+    }
     clearInterval(intervalRef.current);
+    setGame("welcome");
   };
 
   const mole = (index) => {

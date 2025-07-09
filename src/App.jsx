@@ -8,6 +8,10 @@ export default function App() {
     return (
       <div>
         <h1>Whack-a-Mole</h1>
+        <p>
+          Click the moles as fast as you can within 15 seconds to score points!
+        </p>
+        <p>Go fast to set the highest record in the table!</p>
         <button onClick={startGame}>Play</button>
         {high.length > 0 && (
           <div>
@@ -23,10 +27,21 @@ export default function App() {
     );
   }
 
+  if (game == "over") {
+    return (
+      <div>
+        <h1>Game Over!</h1>
+        <p>Your Score is: {score}</p>
+        <button onClick={restartGame}>Back to menu</button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h1>Whack-a-Mole</h1>
       <p>Score: {score}</p>
+      <p>Time Left: {time}s</p>
       <Field />
       <button onClick={restartGame}>Restart</button>
     </div>
